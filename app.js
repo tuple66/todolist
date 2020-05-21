@@ -29,22 +29,24 @@ app.get("/", function (req, res) {
 
 //This is the receipt of the post request from list.ejs
 //it takes the test from the new item and adds it to the array newItems
-//it the redirects the page back to the homepage which triggers the above get code 
+//it the redirects the page back to the homepage which triggers the above get code
+
+
 app.post("/", function (req, res) {
+ let item = req.body.newItem;
+  if(req.body.list === "Work"){
+  item = req.body.newItem;
+  workItems.push(item);
+  res.redirect("/Work");
+ } else {
   item = req.body.newItem;
   items.push(item);
   res.redirect("/");
-
+ }
 });
 
 app.get("/work",function(req,res){
   res.render("list",{listTitle:"Work", newListItem: workItems});
-});
-
-app.post("/work", function (req, res) {
-  item = req.body.newItem;
-  workItems.push(item);
-  res.redirect("/");
 });
 
 app.listen(3000, function () {
