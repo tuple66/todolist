@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const date = require(__dirname + "/date.js");
+
 let items = [];
 let workItems = [];
 app.set("view engine", "ejs");
@@ -11,15 +13,9 @@ app.use(express.static("public"));
 //This creates the date to be displayed and then calls the list.ejs
 //it renders this date with the array of newItems
 app.get("/", function (req, res) {
+ let day = date();
+  
 
-  let today = new Date();
-  let options = {
-    day: "numeric",
-    weekday: "long",
-    month: "long",
-  };
-
-  let day = today.toLocaleDateString("en-GB", options);
 
   res.render("list", {
     listTitle: day,
@@ -27,8 +23,9 @@ app.get("/", function (req, res) {
   });
 });
 
-//This is the receipt of the post request from list.ejs
-//it takes the test from the new item and adds it to the array newItems
+//When the post request comes in the code checks for the title and if work pushes the data onto the work list
+//If its from the home page then it pushes the data onto the home list
+//it takes the text from the new item and adds it to the array newItems
 //it the redirects the page back to the homepage which triggers the above get code
 
 
@@ -45,8 +42,16 @@ app.post("/", function (req, res) {
  }
 });
 
+
+//When the work page is requested it returns to render the list with the work title and the array set as workitems
+//This will then cause 
 app.get("/work",function(req,res){
   res.render("list",{listTitle:"Work", newListItem: workItems});
+});
+
+
+app.get("/about",function(req,res){
+res.render("about")
 });
 
 app.listen(3000, function () {
